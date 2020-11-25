@@ -1,0 +1,44 @@
+version: "2"
+
+networks:
+  twitch-recommendation:
+    driver: bridge
+
+services:
+  database:
+    image: postgres:12.1
+    container_name: twitch-recommendation-database
+    ports:
+      - 5432:5432
+    networks:
+      - twitch-recommendation
+    environment:
+      - POSTGRES_DB=twitch-recommendation-dev
+      - POSTGRES_USER=twitch-recommendation
+      - POSTGRES_PASSWORD=twitch-recommendation
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    image: twitch-recommendation-backend:latest
+    container_name: twitch-recommendation-api
+    build:
+      context: .
+    working_dir: /code
+    command: bash -c 'mix deps.get && mix phx.server'
+    networks:
+      - twitch-recommendation
+    ports:
+      - 4000:4000
+      - 4001:4001
+    volumes:
+      - ./:/code
+      - /code/deps
+      - /code/_build
+      - /code/.elixir_ls
+    depends_on:
+      - database
+    env_file: .env
+
+volumes:
+    pgdata:
