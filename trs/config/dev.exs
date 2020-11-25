@@ -2,10 +2,10 @@ use Mix.Config
 
 # Configure your database
 config :trs, TRS.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "trs_dev",
-  hostname: "localhost",
+  username: "twitch-recommendation",
+  password: "twitch-recommendation",
+  database: "twitch-recommendation-dev",
+  hostname: "database",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

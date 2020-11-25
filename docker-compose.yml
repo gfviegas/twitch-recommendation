@@ -19,20 +19,20 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  api:
+  app:
     image: twitch-recommendation-backend:latest
-    container_name: twitch-recommendation-api
+    container_name: twitch-recommendation-app
     build:
-      context: .
+      context: ./trs
     working_dir: /code
     command: bash -c 'mix deps.get && mix phx.server'
     networks:
       - twitch-recommendation
     ports:
-      - 4000:4000
+      - 80:4000
       - 4001:4001
     volumes:
-      - ./:/code
+      - ./trs:/code
       - /code/deps
       - /code/_build
       - /code/.elixir_ls
