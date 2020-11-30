@@ -1,11 +1,17 @@
 <main role="main" class="container">
-  <p class="alert alert-info" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+  <%= if live_flash(@flash, :info) do %>
+    <div class="bg-blue-500 border border-blue-200 text-white pl-4 pr-8 py-3 rounded relative" role="alert">
+      <span class="block sm:inline"><%= live_flash(@flash, :info) %></span>
+    </div>
+  <% end %>
+  <%= if live_flash(@flash, :error) do %>
+    <div class="bg-red-500 border border-red-200 text-white pl-4 pr-8 py-3 rounded relative" role="alert">
+      <strong class="font-bold"> Oops! </strong>
+      <span class="block sm:inline"><%= live_flash(@flash, :error) %></span>
+    </div>
+  <% end %>
 
-  <p class="alert alert-danger" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="error"><%= live_flash(@flash, :error) %></p>
-
-  <%= @inner_content %>
+  <div class="py-6">
+    <%= @inner_content %>
+  </div>
 </main>
