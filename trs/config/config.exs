@@ -28,7 +28,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 config :trs, TRSWeb.Gettext,
-  locales: ~w(en pt),
+  locales: ["pt"],
   default_locale: "pt"
 
 config :gettext, :default_locale, "pt"

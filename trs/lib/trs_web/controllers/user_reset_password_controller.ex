@@ -21,9 +21,9 @@ defmodule TRSWeb.UserResetPasswordController do
     conn
     |> put_flash(
       :info,
-      "If your email is in our system, you will receive instructions to reset your password shortly."
+      "Se seu email estiver cadastrado no sistema, você receberá em breve um email com instruções para atualizar sua senhar."
     )
-    |> redirect(to: "/")
+    |> redirect(to: "/users/log_in")
   end
 
   def edit(conn, _params) do
@@ -36,7 +36,7 @@ defmodule TRSWeb.UserResetPasswordController do
     case Accounts.reset_user_password(conn.assigns.user, user_params) do
       {:ok, _} ->
         conn
-        |> put_flash(:info, "Password reset successfully.")
+        |> put_flash(:info, "Senha redefinida com sucesso.")
         |> redirect(to: Routes.user_session_path(conn, :new))
 
       {:error, changeset} ->
@@ -51,8 +51,8 @@ defmodule TRSWeb.UserResetPasswordController do
       conn |> assign(:user, user) |> assign(:token, token)
     else
       conn
-      |> put_flash(:error, "Reset password link is invalid or it has expired.")
-      |> redirect(to: "/")
+      |> put_flash(:error, "O link de recuperação de senha é inválido ou já expirou.")
+      |> redirect(to: "/users/log_in")
       |> halt()
     end
   end

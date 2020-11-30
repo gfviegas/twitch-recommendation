@@ -20,5 +20,5 @@ defmodule TRSWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :trs
+  use Gettext, otp_app: :trs, default_locale: "pt"
 end
