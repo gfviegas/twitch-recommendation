@@ -1,0 +1,67 @@
+<h1>Show Stream</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, TRSWeb.StreamLive.FormComponent,
+    id: @stream.id,
+    title: @page_title,
+    action: @live_action,
+    stream: @stream,
+    return_to: Routes.stream_show_path(@socket, :show, @stream) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>User:</strong>
+    <%= @stream.user_id %>
+  </li>
+
+  <li>
+    <strong>User name:</strong>
+    <%= @stream.user_name %>
+  </li>
+
+  <li>
+    <strong>Game:</strong>
+    <%= @stream.game_id %>
+  </li>
+
+  <li>
+    <strong>Game name:</strong>
+    <%= @stream.game_name %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @stream.title %>
+  </li>
+
+  <li>
+    <strong>Viewer count:</strong>
+    <%= @stream.viewer_count %>
+  </li>
+
+  <li>
+    <strong>Started at:</strong>
+    <%= @stream.started_at %>
+  </li>
+
+  <li>
+    <strong>Language:</strong>
+    <%= @stream.language %>
+  </li>
+
+  <li>
+    <strong>Thumbnail url:</strong>
+    <%= @stream.thumbnail_url %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @stream.type %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.stream_show_path(@socket, :edit, @stream), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.stream_index_path(@socket, :index) %></span>

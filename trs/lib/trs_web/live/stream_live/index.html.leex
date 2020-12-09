@@ -1,0 +1,40 @@
+<h1>Listing Streams</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>User name</th>
+      <th>Game</th>
+      <th>Game name</th>
+      <th>Title</th>
+      <th>Viewer count</th>
+      <th>Started at</th>
+      <th>Language</th>
+      <th>Thumbnail url</th>
+      <th>Type</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="streams">
+    <%= for stream <- @streams do %>
+      <tr id="stream-<%= stream.id %>">
+        <td><%= stream.user_id %></td>
+        <td><%= stream.user_name %></td>
+        <td><%= stream.game_id %></td>
+        <td><%= stream.game_name %></td>
+        <td><%= stream.title %></td>
+        <td><%= stream.viewer_count %></td>
+        <td><%= stream.started_at %></td>
+        <td><%= stream.language %></td>
+        <td><%= stream.thumbnail_url %></td>
+        <td><%= stream.type %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.stream_show_path(@socket, :show, stream) %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

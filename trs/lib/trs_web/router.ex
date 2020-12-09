@@ -56,7 +56,9 @@ defmodule TRSWeb.Router do
   scope "/", TRSWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/", PageLive, :index
+    live "/", StreamLive.Index, :index
+    live "/stream/:id", StreamLive.Show, :show
+
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
