@@ -60,6 +60,13 @@ defmodule TRSWeb.Router do
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    live "/user_interests", InterestLive.Index, :index
+    live "/user_interests/new", InterestLive.Index, :new
+    live "/user_interests/:id/edit", InterestLive.Index, :edit
+
+    live "/user_interests/:id", InterestLive.Show, :show
+    live "/user_interests/:id/show/edit", InterestLive.Show, :edit
   end
 
   scope "/", TRSWeb do

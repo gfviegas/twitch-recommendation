@@ -1,0 +1,39 @@
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, TRSWeb.InterestLive.FormComponent,
+    id: @interest.id || :new,
+    title: @page_title,
+    action: @live_action,
+    interest: @interest,
+    current_user: @current_user,
+    return_to: Routes.interest_index_path(@socket, :index) %>
+<% end %>
+
+<table class="table-auto w-full">
+  <thead>
+    <tr>
+      <th class="px-3">ID</th>
+      <th class="px-10">Jogo</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="user_interests">
+    <%= for interest <- @user_interests do %>
+      <tr class="border-gray-200 " id="interest-<%= interest.id %>">
+        <td class="text-center"> <%= interest.id %> </td>
+        <td class="text-center"> <%= interest.game.name %> </td>
+        <td class="text-center">
+          <span class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:text-sm">
+            <%= live_patch "Editar", to: Routes.interest_index_path(@socket, :edit, interest) %>
+          </span>
+          <span class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm">
+            <%= link "Excluir", to: "#", phx_click: "delete", phx_value_id: interest.id, data: [confirm: "Você tem certeza?"] %>
+          </span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span class="my-10 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto sm:text-sm">
+  <%= live_patch "Novo interesse", to: Routes.interest_index_path(@socket, :new) %>
+</span>
