@@ -1,40 +1,40 @@
-<h1>Listing Streams</h1>
+<h1>Your Streams List</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>User name</th>
-      <th>Game</th>
-      <th>Game name</th>
-      <th>Title</th>
-      <th>Viewer count</th>
-      <th>Started at</th>
-      <th>Language</th>
-      <th>Thumbnail url</th>
-      <th>Type</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="streams">
-    <%= for stream <- @streams do %>
-      <tr id="stream-<%= stream.id %>">
-        <td><%= stream.user_id %></td>
-        <td><%= stream.user_name %></td>
-        <td><%= stream.game_id %></td>
-        <td><%= stream.game_name %></td>
-        <td><%= stream.title %></td>
-        <td><%= stream.viewer_count %></td>
-        <td><%= stream.started_at %></td>
-        <td><%= stream.language %></td>
-        <td><%= stream.thumbnail_url %></td>
-        <td><%= stream.type %></td>
-
-        <td>
-          <span><%= live_redirect "Show", to: Routes.stream_show_path(@socket, :show, stream) %></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<main class="w-full overflow-y-auto">
+  <div id="streams">
+    <div class="px-10 grid grid-cols-4 gap-4">
+      <%= for stream <- @streams do %>
+      <div
+        class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center"
+      >
+        <div class="bg-white rounded-lg mt-5">
+          <img
+            src="<%= stream.thumbnail_url %>"
+            class="h-40 rounded-md"
+            alt=""
+          />
+        </div>
+        <div class="bg-white shadow-lg rounded-lg -mt-4 w-64">
+          <div class="py-5 px-5">
+            <span class="font-bold text-gray-800 text-lg"> <%= stream.user_name %> </span>
+            <div class="flex items-center justify-between">
+              <div class="text-sm text-gray-600 font-light">
+                <%= stream.game_name %>
+              </div>
+              <div class="text-2xl text-red-600 font-bold">
+                <img
+                  src="<%= Routes.static_path(@socket, "/eye.svg") %>"
+                  class="h-5 rounded-md"
+                  alt=""
+                />
+                <%= stream.viewer_count %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end cols -->
+      <% end %>
+    </div>
+  </div>
+</main>
