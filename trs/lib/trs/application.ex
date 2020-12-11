@@ -14,9 +14,12 @@ defmodule TRS.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: TRS.PubSub},
       # Start the Endpoint (http/https)
-      TRSWeb.Endpoint
+      TRSWeb.Endpoint,
       # Start a worker by calling: TRS.Worker.start_link(arg)
       # {TRS.Worker, arg}
+
+      # Twitch Client
+      TRS.TwitchClient
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

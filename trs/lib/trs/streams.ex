@@ -1,27 +1,21 @@
 defmodule TRS.Streams do
-  alias TRS.Streams.Stream
+  alias TRS.TwitchClient
+  alias TRS.Interests
 
-  # TODO: Bater na api da twitch pra retornar estes dados
-  def list_streams do
-    [
-      %Stream{id: 1, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 27471, title: "Joguinho da quebrada", viewer_count: 10, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"},
-      %Stream{id: 2, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 18122, title: "TO alone venham me ver", viewer_count: 5, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"},
-      %Stream{id: 3, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 18122, title: "TO alone venham me ver", viewer_count: 5, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"},
-      %Stream{id: 4, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 18122, title: "TO alone venham me ver", viewer_count: 5, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"},
-      %Stream{id: 5, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 18122, title: "TO alone venham me ver", viewer_count: 5, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"},
-      %Stream{id: 6, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 18122, title: "TO alone venham me ver", viewer_count: 5, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"}
-    ]
+  alias TRS.Accounts.User
+
+  def list_streams(game_ids \\ [])
+  def list_streams(game_ids) when is_list(game_ids) do
+    TwitchClient.fetch_streams(game_ids)
   end
 
-  def list_streams(current_user) do
+  def list_streams(%User{id: user_id}) do
     # Busca a lista de jogos de interesse do usuario
+    game_ids = Interests.list_user_interests(user_id)
+      |> Enum.map(&(&1.game_id))
+      |> Enum.uniq
 
-    # Bater na api passando os game_ids vinculados a este usuario
-    nil
-  end
-
-  def get_stream!(id) do
-    nil
+    TwitchClient.fetch_streams(game_ids)
   end
 
 end
