@@ -9,44 +9,47 @@
     return_to: Routes.stream_show_path(@socket, :show, @stream) %>
 <% end %>
 
-<div class="bg-white rounded-lg my-5">
-  <img
-    src="<%= @stream.thumbnail_url %>"
-    class="h-60 rounded-md"
-    alt=""
-  >
+<div class="flex">
+  <div class="bg-white rounded-lg my-5">
+    <img
+      src="<%= @stream.thumbnail_url %>"
+      class="h-60 rounded-md"
+      alt=""
+    >
+  </div>
+  <div class="my-5 mx-5">
+    <ul>
+      <li class="my-2">
+        <strong>Streamer:</strong>
+        <%= @stream.user_name %>
+      </li>
+      <li class="my-2">
+        <strong>Jogo:</strong>
+        <%= @stream.game_name %> (<%= @stream.game_id %>)
+      </li>
+      <li class="my-2">
+        <strong>Título:</strong>
+        <%= @stream.title %>
+      </li>
+      <li class="my-2">
+        <strong>Viewers:</strong>
+        <%= @stream.viewer_count %>
+      </li>
+      <li class="my-2">
+        <strong>Horário de início:</strong>
+        <%= @stream.started_at %>
+      </li>
+      <li class="my-2">
+        <strong>Idioma:</strong>
+        <%= @stream.language %>
+      </li>
+      <li class="my-2">
+        <strong>Tipo de conteúdo:</strong>
+        <%= @stream.type %>
+      </li>
+    </ul>
+  </div>
 </div>
-
-<ul>
-  <li>
-    <strong>Streamer:</strong>
-    <%= @stream.user_name %>
-  </li>
-  <li>
-    <strong>Jogo:</strong>
-    <%= @stream.game_name %> (<%= @stream.game_id %>)
-  </li>
-  <li>
-    <strong>Título:</strong>
-    <%= @stream.title %>
-  </li>
-  <li>
-    <strong>Viewers:</strong>
-    <%= @stream.viewer_count %>
-  </li>
-  <li>
-    <strong>Horário de início:</strong>
-    <%= @stream.started_at %>
-  </li>
-  <li>
-    <strong>Idioma:</strong>
-    <%= @stream.language %>
-  </li>
-  <li>
-    <strong>Tipo de conteúdo:</strong>
-    <%= @stream.type %>
-  </li>
-</ul>
 
 <span class="my-5 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-purple-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto sm:text-sm">
   <%= live_redirect "Assistir na Twitch", to: Routes.stream_index_path(@socket, :index) %>
