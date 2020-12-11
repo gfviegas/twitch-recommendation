@@ -34,7 +34,7 @@ defmodule TRSWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: TRSWeb.Telemetry
+      live_dashboard "/dashboard", metrics: TRSWeb.Telemetry, ecto_repos: [TRS.Repo]
     end
   end
 

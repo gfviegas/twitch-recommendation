@@ -20,7 +20,7 @@ defmodule TRS.MixProject do
   def application do
     [
       mod: {TRS.Application, []},
-      extra_applications: [:logger, :runtime_tools, :httpoison]
+      extra_applications: [:logger, :runtime_tools, :httpoison, :os_mon]
     ]
   end
 
@@ -49,7 +49,8 @@ defmodule TRS.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
-      {:httpoison, "~> 1.7"}
+      {:httpoison, "~> 1.7"},
+      {:ecto_psql_extras, "~> 0.2"}
     ]
   end
 
