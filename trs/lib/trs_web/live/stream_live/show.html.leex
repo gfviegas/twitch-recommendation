@@ -1,4 +1,4 @@
-<h1>Show Stream</h1>
+<h1>Dados da stream</h1>
 
 <%= if @live_action in [:edit] do %>
   <%= live_modal @socket, TRSWeb.StreamLive.FormComponent,
@@ -9,59 +9,48 @@
     return_to: Routes.stream_show_path(@socket, :show, @stream) %>
 <% end %>
 
+<div class="bg-white rounded-lg my-5">
+  <img
+    src="<%= @stream.thumbnail_url %>"
+    class="h-60 rounded-md"
+    alt=""
+  >
+</div>
+
 <ul>
-
   <li>
-    <strong>User:</strong>
-    <%= @stream.user_id %>
-  </li>
-
-  <li>
-    <strong>User name:</strong>
+    <strong>Streamer:</strong>
     <%= @stream.user_name %>
   </li>
-
   <li>
-    <strong>Game:</strong>
-    <%= @stream.game_id %>
+    <strong>Jogo:</strong>
+    <%= @stream.game_name %> (<%= @stream.game_id %>)
   </li>
-
   <li>
-    <strong>Game name:</strong>
-    <%= @stream.game_name %>
-  </li>
-
-  <li>
-    <strong>Title:</strong>
+    <strong>Título:</strong>
     <%= @stream.title %>
   </li>
-
   <li>
-    <strong>Viewer count:</strong>
+    <strong>Viewers:</strong>
     <%= @stream.viewer_count %>
   </li>
-
   <li>
-    <strong>Started at:</strong>
+    <strong>Horário de início:</strong>
     <%= @stream.started_at %>
   </li>
-
   <li>
-    <strong>Language:</strong>
+    <strong>Idioma:</strong>
     <%= @stream.language %>
   </li>
-
   <li>
-    <strong>Thumbnail url:</strong>
-    <%= @stream.thumbnail_url %>
-  </li>
-
-  <li>
-    <strong>Type:</strong>
+    <strong>Tipo de conteúdo:</strong>
     <%= @stream.type %>
   </li>
-
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.stream_show_path(@socket, :edit, @stream), class: "button" %></span>
-<span><%= live_redirect "Back", to: Routes.stream_index_path(@socket, :index) %></span>
+<span class="my-5 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-purple-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto sm:text-sm">
+  <%= live_redirect "Assistir na Twitch", to: Routes.stream_index_path(@socket, :index) %>
+</span>
+<span class="my-5 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-2 py-2 bg-gray-500 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:w-auto sm:text-sm">
+  <%= live_redirect "Voltar", to: Routes.stream_index_path(@socket, :index) %>
+</span>

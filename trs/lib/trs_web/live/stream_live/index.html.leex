@@ -1,33 +1,39 @@
-<h1>Your Streams List</h1>
+<h1>Streams baseadas em seus interesses</h1>
 
 <main class="w-full overflow-y-auto">
   <div id="streams">
-    <div class="px-10 grid grid-cols-4 gap-4">
+    <div class="px-2 grid grid-cols-4 justify-items-center gap-4">
       <%= for stream <- @streams do %>
       <div
-        class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center"
+        class="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1 xl:col-span-1 flex flex-col items-center my-4 mx-2"
       >
         <div class="bg-white rounded-lg mt-5">
           <img
             src="<%= stream.thumbnail_url %>"
             class="h-40 rounded-md"
             alt=""
-          />
+          >
         </div>
-        <div class="bg-white shadow-lg rounded-lg -mt-4 w-64">
+        <div class="bg-white shadow-lg rounded-lg -mt-4 w-60">
           <div class="py-5 px-5">
-            <span class="font-bold text-gray-800 text-lg"> <%= stream.user_name %> </span>
+            <span class="font-bold text-gray-800 text-lg">
+              <%= live_redirect stream.user_name, to: Routes.stream_show_path(@socket, :show, stream) %>
+            </span>
             <div class="flex items-center justify-between">
               <div class="text-sm text-gray-600 font-light">
                 <%= stream.game_name %>
               </div>
-              <div class="text-2xl text-red-600 font-bold">
-                <img
-                  src="<%= Routes.static_path(@socket, "/eye.svg") %>"
-                  class="h-5 rounded-md"
-                  alt=""
-                />
-                <%= stream.viewer_count %>
+              <div class="flex">
+                <div class="my-1.5 mx-2 flex-auto">
+                  <img
+                    src="<%= Routes.static_path(@socket, "/images/eye.png") %>"
+                    class="h-5 rounded-md text-red-600"
+                    alt=""
+                  />
+                </div>
+                <div class="flex-auto">
+                  <span class="text-2xl font-bold text-red-600"> <%= stream.viewer_count %> </span>
+                </div>
               </div>
             </div>
           </div>

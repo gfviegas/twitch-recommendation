@@ -21,7 +21,7 @@ defmodule TRS.Streams do
   end
 
   def get_stream!(id) do
-    nil
+    %Stream{id: 6, user_id: 23090, user_name: "JOaozinho Gameplay", game_name: "Minecraft", game_id: 18122, title: "TO alone venham me ver", viewer_count: 5, thumbnail_url: "https://static-cdn.jtvnw.net/previews-ttv/live_user_dansgaming-1280x720.jpg"}
   end
 
 end
