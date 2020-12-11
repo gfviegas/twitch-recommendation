@@ -18,7 +18,7 @@ defmodule TRS.Streams do
     TwitchClient.fetch_streams(game_ids)
   end
 
-  def get_stream!(id) do
+  def get_stream!(_id) do
     nil
   end
 
