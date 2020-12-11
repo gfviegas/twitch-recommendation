@@ -35,7 +35,7 @@ defmodule TRSWeb.StreamLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Minhas recomendaçÕes")
+    |> assign(:page_title, "Dashboard")
     |> assign(:stream, nil)
   end
 
