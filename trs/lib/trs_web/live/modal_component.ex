@@ -19,9 +19,10 @@ defmodule TRSWeb.ModalComponent do
         <!-- This element is to trick the browser into centering the modal contents. -->
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-        <div style="max-width:85vw" class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+        <div style="max-width:65vw" class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
           <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <%= live_patch raw("&times;"), to: @return_to, class: "phx-modal-close" %>
+            <%= if @redirect_to do live_redirect raw("&times;"), to: @redirect_to end %>
+            <%= if @return_to do live_patch raw("&times;"), to: @return_to end %>
             <%= live_component @socket, @component, @opts %>
           </div>
         </div>
@@ -33,6 +34,10 @@ defmodule TRSWeb.ModalComponent do
 
   @impl true
   def handle_event("close", _, socket) do
-    {:noreply, push_patch(socket, to: socket.assigns.return_to)}
+    path_to = case socket.assigns.return_to do
+      nil -> socket.assigns.redirect_to
+      _   -> socket.assigns.return_to
+    end
+    {:noreply, push_patch(socket, to: path_to)}
   end
 end

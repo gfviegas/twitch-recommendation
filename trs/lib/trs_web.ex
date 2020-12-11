@@ -17,6 +17,14 @@ defmodule TRSWeb do
   and import those modules here.
   """
 
+  def check_url_active(current_url, target_url, active_class, _inactive_class) when current_url == target_url do
+    active_class
+  end
+
+  def check_url_active(_current_url, _target_url, _active_class, inactive_class) do
+    inactive_class
+  end
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: TRSWeb

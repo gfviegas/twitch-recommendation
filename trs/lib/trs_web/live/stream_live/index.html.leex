@@ -3,7 +3,7 @@
 <%= if @current_stream do %>
   <%= live_modal @socket, TRSWeb.StreamLive.Show,
     stream: @current_stream,
-    return_to: Routes.stream_index_path(@socket, :index) %>
+    redirect_to: Routes.stream_index_path(@socket, :index) %>
 <% end %>
 
 <main class="w-full overflow-y-auto">
@@ -26,8 +26,6 @@
           <div class="py-5 px-5">
             <a class="font-bold text-gray-800 text-lg cursor-pointer" phx-click="open_stream" phx-value-stream="<%= Jason.encode!(Map.from_struct(stream)) %>">
               <%= stream.user_name %>
-              <%# <%= live_patch stream.user_name, to: Routes.stream_index_path(@socket, :open_stream, stream) %>
-              <%# <%= live_redirect stream.user_name, to: Routes.stream_show_path(@socket, :show, stream) %>
             </a>
             <div class="flex items-center justify-between">
               <div class="text-sm text-gray-600 font-light">

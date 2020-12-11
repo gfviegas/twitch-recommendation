@@ -16,8 +16,15 @@ defmodule TRSWeb.LiveHelpers do
         return_to: Routes.interest_index_path(@socket, :index) %>
   """
   def live_modal(socket, component, opts) do
-    path = Keyword.fetch!(opts, :return_to)
-    modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
+    return_path = case Keyword.fetch(opts, :return_to) do
+      {:ok, value} -> value
+      :error -> nil
+    end
+    redirect_path = case Keyword.fetch(opts, :redirect_to) do
+      {:ok, value} -> value
+      :error -> nil
+    end
+    modal_opts = [id: :modal, return_to: return_path, redirect_to: redirect_path, component: component, opts: opts]
     live_component(socket, TRSWeb.ModalComponent, modal_opts)
   end
 end
