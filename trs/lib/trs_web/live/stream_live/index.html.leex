@@ -1,5 +1,11 @@
 <h1>Streams baseadas em seus interesses:</h1>
 
+<%= if @current_stream do %>
+  <%= live_modal @socket, TRSWeb.StreamLive.Show,
+    stream: @current_stream,
+    return_to: Routes.stream_index_path(@socket, :index) %>
+<% end %>
+
 <main class="w-full overflow-y-auto">
   <div id="streams">
     <div class="px-2 grid grid-cols-4 justify-items-center gap-4">
@@ -9,16 +15,20 @@
       >
         <div class="bg-white rounded-lg mt-5">
           <img
+            phx-click="open_stream"
+            phx-value-stream="<%= Jason.encode!(Map.from_struct(stream)) %>"
             src="<%= stream.thumbnail_url %>"
-            class="h-40 rounded-md"
+            class="h-40 rounded-md cursor-pointer"
             alt=""
           >
         </div>
         <div class="bg-white shadow-lg rounded-lg -mt-4 w-60">
           <div class="py-5 px-5">
-            <span class="font-bold text-gray-800 text-lg">
-              <%= live_redirect stream.user_name, to: Routes.stream_show_path(@socket, :show, stream) %>
-            </span>
+            <a class="font-bold text-gray-800 text-lg cursor-pointer" phx-click="open_stream" phx-value-stream="<%= Jason.encode!(Map.from_struct(stream)) %>">
+              <%= stream.user_name %>
+              <%# <%= live_patch stream.user_name, to: Routes.stream_index_path(@socket, :open_stream, stream) %>
+              <%# <%= live_redirect stream.user_name, to: Routes.stream_show_path(@socket, :show, stream) %>
+            </a>
             <div class="flex items-center justify-between">
               <div class="text-sm text-gray-600 font-light">
                 <%= stream.game_name %>

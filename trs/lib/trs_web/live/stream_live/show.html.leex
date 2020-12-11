@@ -1,14 +1,5 @@
 <h1>Dados da stream:</h1>
 
-<%= if @live_action in [:edit] do %>
-  <%= live_modal @socket, TRSWeb.StreamLive.FormComponent,
-    id: @stream.id,
-    title: @page_title,
-    action: @live_action,
-    stream: @stream,
-    return_to: Routes.stream_show_path(@socket, :show, @stream) %>
-<% end %>
-
 <div class="flex">
   <div class="bg-white rounded-lg my-5">
     <img

@@ -17,7 +17,11 @@ defmodule TRSWeb.StreamLive.Index do
     # TODO: set interval (atualiza_dados, 30_000)
     # Process.send_after(@self, :update_streams, @interval)
 
-    {:ok, assign(socket, :streams, streams)}
+    {:ok,
+      socket
+        |> assign(:streams, streams)
+        |> assign(:current_stream, nil)
+    }
   end
 
   @impl true
@@ -31,6 +35,12 @@ defmodule TRSWeb.StreamLive.Index do
       socket
       |> assign(:streams, list_streams(current_user))
     }
+  end
+
+  @impl true
+  def handle_event("open_stream", %{"stream" => stream}, socket) do
+    # stream = struct(Stream, Jason.decode!(stream, keys: :atoms))
+    {:noreply, assign(socket, :current_stream, stream)}
   end
 
   defp apply_action(socket, :index, _params) do
