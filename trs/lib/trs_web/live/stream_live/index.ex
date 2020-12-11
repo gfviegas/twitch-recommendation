@@ -15,11 +15,12 @@ defmodule TRSWeb.StreamLive.Index do
     streams = list_streams(current_user)
 
     # TODO: set interval (atualiza_dados, 30_000)
-    # Process.send_after(@self, :update_streams, @interval)
+    Process.send_after(self(), :update_streams, @interval)
 
     {:ok,
       socket
         |> assign(:streams, streams)
+        |> assign(:current_user, current_user)
         |> assign(:current_stream, nil)
     }
   end
@@ -30,8 +31,11 @@ defmodule TRSWeb.StreamLive.Index do
   end
 
   @impl true
-  def handle_info(:update_streams, socket = %{current_user: current_user}) do
-    {:ok,
+  def handle_info(:update_streams, socket = %{assigns: %{current_user: current_user}}) do
+    Process.send_after(self(), :update_streams, @interval)
+    IO.puts "Atualizando dados...."
+
+    {:noreply,
       socket
       |> assign(:streams, list_streams(current_user))
     }

@@ -52,39 +52,39 @@ msgstr "ainda possui associação com essa entrada"
 ## From Ecto.Changeset.validate_length/3
 #, fuzzy
 msgid "should be %{count} character(s)"
-msgid_plural "deve possuir %{count} caractere(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "deve possuir %{count} caractere(s)"
+msgstr[1] "deve possuir %{count} caractere(s)"
 
 #, fuzzy
 msgid "should have %{count} item(s)"
-msgid_plural "deve possuir %{count} item(ns)"
-msgstr[0] ""
-msgstr[1] ""
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "deve possuir %{count} item(ns)"
+msgstr[1] "deve possuir %{count} item(ns)"
 
 #, fuzzy
 msgid "should be at least %{count} character(s)"
-msgid_plural "deve possuir pelo menos %{count} caractere(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "deve possuir pelo menos %{count} caractere(s)"
+msgstr[1] "deve possuir pelo menos %{count} caractere(s)"
 
 #, fuzzy
 msgid "should have at least %{count} item(s)"
-msgid_plural "deve possuir pelo menos %{count} item(ns)"
-msgstr[0] ""
-msgstr[1] ""
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "deve possuir pelo menos %{count} item(ns)"
+msgstr[1] "deve possuir pelo menos %{count} item(ns)"
 
 #, fuzzy
 msgid "should be at most %{count} character(s)"
-msgid_plural "deve possuir no máximo %{count} caractere(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "deve possuir no máximo %{count} caractere(s)"
+msgstr[1] "deve possuir no máximo %{count} caractere(s)"
 
 #, fuzzy
 msgid "should have at most %{count} item(s)"
-msgid_plural "deve possuir no máximo %{count} item(ns)"
-msgstr[0] ""
-msgstr[1] ""
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "deve possuir no máximo %{count} item(ns)"
+msgstr[1] "deve possuir no máximo %{count} item(ns)"
 
 ## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"

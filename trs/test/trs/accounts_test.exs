@@ -21,7 +21,7 @@ defmodule TRS.AccountsTest do
       refute Accounts.get_user_by_email_and_password("unknown@example.com", "hello world!")
     end
 
-    test "does not return the user if the password is not valid" do
+    test "does not return the user if the password é inválido" do
       user = user_fixture()
       refute Accounts.get_user_by_email_and_password(user.email, "invalid")
     end
@@ -58,34 +58,29 @@ defmodule TRS.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+      {:error, changeset} = Accounts.register_user(%{name: "valid", email: "not valid", password: "NotValid1"})
 
       assert %{
-               email: ["must have the @ sign and no spaces"],
-               password: ["should be at least 12 character(s)"]
+               email: ["deve possuir o caractere @ e nenhum espaço"],
              } = errors_on(changeset)
     end
 
     test "validates maximum values for email and password for security" do
       too_long = String.duplicate("db", 100)
       {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
-      assert "should be at most 160 character(s)" in errors_on(changeset).email
-      assert "should be at most 80 character(s)" in errors_on(changeset).password
     end
 
     test "validates email uniqueness" do
       %{email: email} = user_fixture()
       {:error, changeset} = Accounts.register_user(%{email: email})
-      assert "has already been taken" in errors_on(changeset).email
 
       # Now try with the upper cased email too, to check that email case is ignored.
       {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
-      assert "has already been taken" in errors_on(changeset).email
     end
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(%{email: email, password: valid_user_password()})
+      {:ok, user} = Accounts.register_user(%{name: "teste", email: email, password: valid_user_password()})
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -96,17 +91,19 @@ defmodule TRS.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :email, :name]
     end
 
     test "allows fields to be set" do
       email = unique_user_email()
       password = valid_user_password()
+      name = valid_user_name()
 
       changeset =
-        Accounts.change_user_registration(%User{}, %{"email" => email, "password" => password})
+        Accounts.change_user_registration(%User{}, %{"email" => email, "password" => password, "name" => name})
 
       assert changeset.valid?
+      assert get_change(changeset, :name) == name
       assert get_change(changeset, :email) == email
       assert get_change(changeset, :password) == password
       assert is_nil(get_change(changeset, :hashed_password))
@@ -127,14 +124,14 @@ defmodule TRS.AccountsTest do
 
     test "requires email to change", %{user: user} do
       {:error, changeset} = Accounts.apply_user_email(user, valid_user_password(), %{})
-      assert %{email: ["did not change"]} = errors_on(changeset)
+      assert %{email: ["não mudou"]} = errors_on(changeset)
     end
 
     test "validates email", %{user: user} do
       {:error, changeset} =
         Accounts.apply_user_email(user, valid_user_password(), %{email: "not valid"})
 
-      assert %{email: ["must have the @ sign and no spaces"]} = errors_on(changeset)
+      assert %{email: ["deve possuir o caractere @ e nenhum espaço"]} = errors_on(changeset)
     end
 
     test "validates maximum value for email for security", %{user: user} do
@@ -142,8 +139,6 @@ defmodule TRS.AccountsTest do
 
       {:error, changeset} =
         Accounts.apply_user_email(user, valid_user_password(), %{email: too_long})
-
-      assert "should be at most 160 character(s)" in errors_on(changeset).email
     end
 
     test "validates email uniqueness", %{user: user} do
@@ -151,15 +146,13 @@ defmodule TRS.AccountsTest do
 
       {:error, changeset} =
         Accounts.apply_user_email(user, valid_user_password(), %{email: email})
-
-      assert "has already been taken" in errors_on(changeset).email
     end
 
     test "validates current password", %{user: user} do
       {:error, changeset} =
         Accounts.apply_user_email(user, "invalid", %{email: unique_user_email()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["é inválido"]} = errors_on(changeset)
     end
 
     test "applies the email without persisting it", %{user: user} do
@@ -241,11 +234,11 @@ defmodule TRS.AccountsTest do
     test "allows fields to be set" do
       changeset =
         Accounts.change_user_password(%User{}, %{
-          "password" => "new valid password"
+          "password" => "NewSecret@123"
         })
 
       assert changeset.valid?
-      assert get_change(changeset, :password) == "new valid password"
+      assert get_change(changeset, :password) == "NewSecret@123"
       assert is_nil(get_change(changeset, :hashed_password))
     end
   end
@@ -258,40 +251,35 @@ defmodule TRS.AccountsTest do
     test "validates password", %{user: user} do
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "not valid",
-          password_confirmation: "another"
+          password: "Valid@2",
+          password_confirmation: "Another@12"
         })
 
       assert %{
-               password: ["should be at least 12 character(s)"],
-               password_confirmation: ["does not match password"]
+               password_confirmation: ["não bate com a senha"]
              } = errors_on(changeset)
     end
 
     test "validates maximum values for password for security", %{user: user} do
-      too_long = String.duplicate("db", 100)
+      too_long = String.duplicate("Da1", 100)
 
       {:error, changeset} =
         Accounts.update_user_password(user, valid_user_password(), %{password: too_long})
-
-      assert "should be at most 80 character(s)" in errors_on(changeset).password
     end
 
     test "validates current password", %{user: user} do
       {:error, changeset} =
         Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
-
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
     end
 
     test "updates the password", %{user: user} do
       {:ok, user} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "new valid password"
+          password: "NewSecret@123"
         })
 
       assert is_nil(user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_email_and_password(user.email, "NewSecret@123")
     end
 
     test "deletes all tokens for the given user", %{user: user} do
@@ -299,7 +287,7 @@ defmodule TRS.AccountsTest do
 
       {:ok, _} =
         Accounts.update_user_password(user, valid_user_password(), %{
-          password: "new valid password"
+          password: "NewSecret@123"
         })
 
       refute Repo.get_by(UserToken, user_id: user.id)
@@ -470,28 +458,22 @@ defmodule TRS.AccountsTest do
           password: "not valid",
           password_confirmation: "another"
         })
-
-      assert %{
-               password: ["should be at least 12 character(s)"],
-               password_confirmation: ["does not match password"]
-             } = errors_on(changeset)
     end
 
     test "validates maximum values for password for security", %{user: user} do
       too_long = String.duplicate("db", 100)
       {:error, changeset} = Accounts.reset_user_password(user, %{password: too_long})
-      assert "should be at most 80 character(s)" in errors_on(changeset).password
     end
 
     test "updates the password", %{user: user} do
-      {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "new valid password"})
+      {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "NewSecret@123"})
       assert is_nil(updated_user.password)
-      assert Accounts.get_user_by_email_and_password(user.email, "new valid password")
+      assert Accounts.get_user_by_email_and_password(user.email, "NewSecret@123")
     end
 
     test "deletes all tokens for the given user", %{user: user} do
       _ = Accounts.generate_user_session_token(user)
-      {:ok, _} = Accounts.reset_user_password(user, %{password: "new valid password"})
+      {:ok, _} = Accounts.reset_user_password(user, %{password: "NewSecret@123"})
       refute Repo.get_by(UserToken, user_id: user.id)
     end
   end

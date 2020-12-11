@@ -9,10 +9,10 @@ config :bcrypt_elixir, :log_rounds, 1
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :trs, TRS.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "trs_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
+  username: "twitch-recommendation",
+  password: "twitch-recommendation",
+  database: "twitch-recommendation-#{System.get_env("MIX_TEST_PARTITION")}",
+  hostname: "database",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

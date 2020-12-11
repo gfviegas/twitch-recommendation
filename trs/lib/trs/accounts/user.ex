@@ -152,7 +152,7 @@ defmodule TRS.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "é ínválido")
+      add_error(changeset, :current_password, "é inválido")
     end
   end
 end
