@@ -42,7 +42,7 @@ defmodule TRS.TwitchClient do
     headers = format_headers(token)
     params = format_game_ids_params(game_ids)
 
-    case HTTPoison.get(@streams_url, headers, params) do
+    case HTTPoison.get(@streams_url, headers, [params: params]) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, %{data: streams}} = Jason.decode(body, keys: :atoms)
         streams = Enum.map(streams, &struct(Stream, &1))

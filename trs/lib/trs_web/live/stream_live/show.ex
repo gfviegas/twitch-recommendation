@@ -1,7 +1,7 @@
 defmodule TRSWeb.StreamLive.Show do
   use TRSWeb, :live_view
 
-  alias TRS.Streams
+  alias TRS.Streams.Stream
 
   @impl true
   def mount(_params, _session, socket) do
@@ -9,11 +9,11 @@ defmodule TRSWeb.StreamLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _, socket) do
+  def handle_params(stream, _, socket) do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:stream, Streams.get_stream!(id))}
+     |> assign(:stream, stream)}
   end
 
   defp page_title(:show), do: "Transmissão"

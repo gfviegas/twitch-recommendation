@@ -3,15 +3,21 @@ defmodule TRSWeb.StreamLive.Index do
 
   alias TRS.Streams
   alias TRS.Streams.Stream
+  alias TRS.Accounts
 
   @interval 30_000
+  @thumbnail_url_width "1920"
+  @thumbnail_url_height "1080"
 
   @impl true
-  def mount(_params, _session, socket) do
-    # TODO: set interval (atualiza_dados, 30_000)
-    Process.send_after(@self, :update_streams, @interval)
+  def mount(_params, %{"user_token" => token}, socket) do
+    current_user = Accounts.get_user_by_session_token(token)
+    streams = list_streams(current_user)
 
-    {:ok, assign(socket, :streams, list_streams())}
+    # TODO: set interval (atualiza_dados, 30_000)
+    # Process.send_after(@self, :update_streams, @interval)
+
+    {:ok, assign(socket, :streams, streams)}
   end
 
   @impl true
@@ -20,10 +26,10 @@ defmodule TRSWeb.StreamLive.Index do
   end
 
   @impl true
-  def handle_info(:update_streams, socket) do
+  def handle_info(:update_streams, socket = %{current_user: current_user}) do
     {:ok,
       socket
-      |> assign(:streams, list_streams)
+      |> assign(:streams, list_streams(current_user))
     }
   end
 
@@ -33,7 +39,17 @@ defmodule TRSWeb.StreamLive.Index do
     |> assign(:stream, nil)
   end
 
-  defp list_streams do
-    Streams.list_streams()
+  defp list_streams(current_user) do
+    {:ok, streams} = Streams.list_streams(current_user)
+
+    streams = Enum.map(streams, fn stream = %{thumbnail_url: original_url} ->
+        url = original_url
+          |> String.replace("{width}", @thumbnail_url_width)
+          |> String.replace("{height}", @thumbnail_url_height)
+
+        %Stream{stream | thumbnail_url: url}
+      end)
+
+    streams
   end
 end
